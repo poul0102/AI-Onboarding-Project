@@ -3,12 +3,48 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const mapContainer = ref(null);
+const map = ref(null);
+const markers = ref([]);
+
+const props = defineProps({
+  touristSpots: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const createMarkers = () => {
+  if (!map.value) return;
+
+  markers.value.forEach((marker) => {
+    marker.setMap(null);
+  });
+
+  markers.value = [];
+
+  props.touristSpots.forEach((spot) => {
+    const markerPosition =
+      new window.kakao.maps.LatLng(
+        spot.mapy,
+        spot.mapx
+      );
+
+    const marker = 
+      new window.kakao.maps.Marker({
+        position: markerPosition,
+        title: spot.title,
+      });
+
+    marker.setMap(map.value);
+
+    markers.value.push(marker);
+  });
+};
 
 const loadKakaoMap = () => {
-  console.log(import.meta.env.VITE_KAKAO_MAP_KEY);
   
   const script = document.createElement("script");
 
@@ -21,13 +57,15 @@ const loadKakaoMap = () => {
           37.5665,
           126.9780
         ),
-        level: 3,
+        level: 6,
       };
 
-      const map = new window.kakao.maps.Map(
+      map.value = new window.kakao.maps.Map(
         mapContainer.value,
         options
       );
+
+      createMarkers();
 
     });
   };
@@ -38,4 +76,15 @@ const loadKakaoMap = () => {
 onMounted(() => {
   loadKakaoMap();
 });
+
+watch(
+  () => props.touristSpots,
+  () => {
+    createMarkers();
+  },
+  {
+    deep: true,
+  }
+);
+
 </script>
