@@ -56,6 +56,16 @@
       <ReviewBoard :place="selectPlace" />
     </section>
 
+    <ChatBotButton
+      v-if="!showChatBot"
+      @click="showChatBot = true"
+    />
+
+    <ChatBotPopup
+      v-if="showChatBot"
+      @close="showChatBot = flase"
+    />
+
   </div>
 
 </template>
@@ -66,6 +76,8 @@ import { ref, onMounted } from "vue";
 import KakaoMap from "../components/common/KakaoMap.vue";
 import { getAccommodations, getTouristSpots } from "@/api/locationApi.js";
 import ReviewBoard from "@/components/review/ReviewBoard.vue";
+import ChatBotButton from "@/components/chatbot/ChatBotButton.vue";
+import ChatBotPopup from "@/components/chatbot/ChatBotPopup.vue";
 
 const touristSpots = ref([]);
 const accommodations = ref([]);
@@ -74,6 +86,8 @@ const selectPlace = ref(null);
 const handleSelectSpot = (spot) => {
   selectPlace.value = spot;
 };
+
+const showChatBot = ref(false);
 
 onMounted(async () => {
   try {
