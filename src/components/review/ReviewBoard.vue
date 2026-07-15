@@ -131,6 +131,8 @@
     <ReviewDetail
       :show="showDetail"
       :review="selectedReview"
+      @updated="handleUpdated"
+      @deleted="handleDeleted"
       @close="showDetail = false"
     />
 
@@ -212,6 +214,16 @@ const handleCreated = () => {
   closeModal();
   loadReviews();
 };
+
+const handleUpdated = async (review) => {
+  selectedReview.value = review;
+  await loadReviews();
+}
+
+const handleDeleted = async () => {
+  showDetail.value=false;
+  await loadReviews();
+}
 
 const openDetail = async (id) => {
   try {

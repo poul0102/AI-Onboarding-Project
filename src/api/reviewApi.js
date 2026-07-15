@@ -20,6 +20,10 @@ export const updateReview = (id, data) => {
   return api.patch(`/api/reviews/${id}`, data);
 };
 
-export const deleteReview = (id, data) => {
-  return api.delete(`/api/reviews/${id}`, { data, });
+export const deleteReview = (id, password) => {
+  return api.delete(`/api/reviews/${id}`, {
+    data: {
+      password,
+    },
+  });
 };
