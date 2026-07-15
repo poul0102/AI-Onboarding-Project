@@ -5,6 +5,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 
+const emit = defineEmits(["select-spot"]);
 const mapContainer = ref(null);
 const map = ref(null);
 const markers = ref([]);
@@ -18,6 +19,8 @@ const props = defineProps({
 
 const createMarkers = () => {
   if (!map.value) return;
+
+  if (!props.touristSpots.length) return;
 
   markers.value.forEach((marker) => {
     marker.setMap(null);
@@ -40,37 +43,41 @@ const createMarkers = () => {
 
     marker.setMap(map.value);
 
+    window.kakao.maps.event.addListener(marker, "click", () => {
+      emit("select-spot", spot);
+    });
+
     markers.value.push(marker);
   });
 };
 
 const loadKakaoMap = () => {
   
-  const script = document.createElement("script");
+  if (window.kakao && window.kakao.maps) {
+    initMap();
+    return;
+  }
 
+  const script = document.createElement("script");
   script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_KEY}&autoload=false`;
 
   script.onload = () => {
     window.kakao.maps.load(() => {
-      const options = {
-        center: new window.kakao.maps.LatLng(
-          37.5665,
-          126.9780
-        ),
-        level: 6,
-      };
-
-      map.value = new window.kakao.maps.Map(
-        mapContainer.value,
-        options
-      );
-
-      createMarkers();
-
+      initMap();
     });
   };
 
   document.head.appendChild(script);
+};
+
+const initMap = () => {
+  const options = {
+    center: new window.kakao.maps.LatLng(37.5665, 126.9780),
+    level: 6,
+  };
+
+  map.value = new window.kakao.maps.Map(mapContainer.value, options);
+  createMarkers();
 };
 
 onMounted(() => {
@@ -82,9 +89,7 @@ watch(
   () => {
     createMarkers();
   },
-  {
-    deep: true,
-  }
+  { deep: true }
 );
 
 </script>

@@ -23,20 +23,38 @@
       <div class="w-2/3 rounded-2xl overflow-hidden shadow-md bg-white">
         <KakaoMap
           :tourist-spots="touristSpots"
+          @select-spot="handleSelectSpot"
         />
       </div>
 
       <div class="w-1/3 rounded-2xl bg-white shadow-md p-6">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          Place Information
-        </h2>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900 mb-4">
+            Place Information
+          </h2>
 
-        <div class="text-gray-400 text-sm">
-          Search a place to see details.
+          <div v-if="selectPlace" class="space-y-4">
+            <div class="border-b pb-4">
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                {{  selectPlace.title }}
+              </h3>
+              <p class="text-sm text-gray-600">
+                📍 {{ selectPlace.addr1 }}
+              </p>
+            </div>
+          </div>
+
+          <div v-else class="text-gray-400 text-sm flex flex-col items-center justify-center h-48 border border-dashed border-gray-200 rounded-xl">
+            <span class="text-3xl mb-2">🗺️</span>
+            <span>Click a marker on the map to see details.</span>
+          </div>
         </div>
       </div>
-      
     </section> 
+
+    <section class="px-8 pb-8">
+      <ReviewBoard :place="selectPlace" />
+    </section>
 
   </div>
 
@@ -47,14 +65,19 @@
 import { ref, onMounted } from "vue";
 import KakaoMap from "../components/common/KakaoMap.vue";
 import { getAccommodations, getTouristSpots } from "@/api/locationApi.js";
+import ReviewBoard from "@/components/review/ReviewBoard.vue";
 
 const touristSpots = ref([]);
 const accommodations = ref([]);
+const selectPlace = ref(null);
+
+const handleSelectSpot = (spot) => {
+  selectPlace.value = spot;
+};
 
 onMounted(async () => {
   try {
     const touristResponse = await getTouristSpots();
-
     touristSpots.value = touristResponse.data;
 
     const accommodationResponse = await getAccommodations();
