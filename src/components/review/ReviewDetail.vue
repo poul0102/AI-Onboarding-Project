@@ -11,9 +11,9 @@
       @click.stop
     >
 
-      <div class="flex justify-between items-center mb-5">
+      <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">
-          리뷰 상세
+          {{ editMode ? "리뷰 수정" : "리뷰 상세" }}
         </h2>
 
         <button @click="$emit('close')">
@@ -21,84 +21,96 @@
         </button>
       </div>
 
-      <div v-if="review">
-        <div class="text-yellow-500 text-2xl mb-2">
-          {{ "⭐".repeat(review.rating) }}
-        </div>
-
-        <h3 class="text-xl font-bold mb-4">
-          {{ review.review_title }}
-        </h3>
-
-        <p class="text-gray-700 whitespace-pre-line">
-          {{ review.content }}
-        </p>
-      </div>
-
-      <div class="flex justify-end gap-2 mt-8">
-        <button
-          @click="editMode=true"
-          class="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-        >
-          수정
-        </button>
-
-        <button
-          @click="showDelete=true"
-          class="bg-red-500 text-white px-4 py-2 rounded-lg"
-        >
-          삭제
-        </button>
-      </div>
-
-      <div v-if="review && editMode">
+      <div v-if="review && !editMode">
         <div class="flex gap-1 text-3xl mb-4">
           <span
             v-for="star in 5"
             :key="star"
-            @click="form.rating = star"
-            class="cursor-pointer"
             :class="star <= form.rating ? 'text-yellow-400' : 'text-gray-300'"
           >
             ★
           </span>
         </div>
 
-        <input
-          v-model="form.review_title"
-          class="border rounded w-full p-2 mb-3"
-          placeholder="제목"
-        />
+        <h3 class="text-2xl font-bold mb-4">
+          {{ review.review_title }}
+        </h3>
 
-        <textarea
-          v-model="form.content"
-          rows="5"
-          class="border rounded w-full p-2 mb-3"
-          placeholder="내용"
-        />
+        <p class="text-gray-700 whitespace-pre-line">
+          {{ review.content }}
+        </p>
 
-        <input
-          v-model="form.password"
-          type="password"
-          class="border rounded w-full p-2"
-          placeholder="비밀번호"
-        />
+      <div class="flex justify-end gap-2 mt-8">
+        <button
+          @click="editMode=true"
+          class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
+        >
+          수정
+        </button>
 
-        <div class="flex justify-end gap-2 mt-6">
-          <button
-            @click="editMode = false"
-            class="border px-4 py-2 rounded-lg"
-          >
-            취소
-          </button>
+        <button
+          @click="showDelete=true"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+        >
+          삭제
+        </button>
 
-          <button
-            @click="saveReview"
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg"
-          >
-            저장
-          </button>
-        </div>
+      </div>
+    </div>
+
+    <div v-else-if="review">
+      <div class="flex gap-1 text-3xl mb-5">
+
+        <span
+          v-for="star in 5"
+          :key="star"
+          @click="form.rating = star"
+          class="cursor-pointer transition"
+          :class="star <= form.rating ? 'text-yellow-400' : 'text-gray-300'"
+        >
+          ★
+        </span>
+
+      </div>
+
+      <input
+        v-model="form.review_title"
+        class="border rounded-lg w-full p-3 mb-4"
+        placeholder="제목"
+      />
+
+      <textarea
+        v-model="form.content"
+        rows="6"
+        class="border rounded-lg w-full p-3 mb-4"
+        placeholder="내용"
+      />
+
+      <input
+        v-model="form.password"
+        type="password"
+        class="border rounded-lg w-full p-3"
+        placeholder="비밀번호"
+      />
+
+      <div class="flex justify-end gap-2 mt-6">
+
+        <button
+          @click="editMode = false"
+          class="border px-4 py-2 rounded-lg"
+        >
+          취소
+        </button>
+
+        <button
+          @click="saveReview"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+        >
+          저장
+        </button>
+
+      </div>
+
       </div>
 
       <div
@@ -120,33 +132,32 @@
           <input
             v-model="deletePassword"
             type="password"
-            class="border rounded w-full p-2 mb-5"
+            class="border rounded-lg w-full p-2 mb-5"
             placeholder="비밀번호"
           />
 
           <div class="flex justify-end gap-2">
 
-          <button
-            @click="showDelete = false"
-            class="border px-4 py-2 rounded"
-          >
-            취소
-          </button>
+            <button
+              @click="showDelete = false"
+              class="border px-4 py-2 rounded-lg"
+            >
+              취소
+            </button>
 
-          <button
-            @click="removeReview"
-            class="bg-red-500 text-white px-4 py-2 rounded"
-          >
-            삭제
-          </button>
+            <button
+              @click="removeReview"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+            >
+              삭제
+            </button>
+
+          </div>
+
         </div>
       </div>
     </div>
-
-    </div>
-
   </div>
-
 </template>
 
 <script setup>

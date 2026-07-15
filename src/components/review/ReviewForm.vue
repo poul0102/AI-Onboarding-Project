@@ -25,6 +25,8 @@
           v-for="star in 5"
           :key="star"
           @click="form.rating = star"
+          class="cursor-pointer transition"
+          :class="star <= form.rating ? 'text-yellow-400' : 'text-gray-300'"
         >
           {{ star <= form.rating ? "★" : "☆" }}
         </span>
