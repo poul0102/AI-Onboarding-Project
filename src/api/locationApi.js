@@ -7,3 +7,11 @@ export const getTouristSpots = () => {
 export const getAccommodations  = () => {
   return api.get("/api/accommodations");
 }
+
+export const searchPlace = (keyword) => {
+  return api.get("/api/places/search", {
+    params: {
+      q: keyword,
+    },
+  });
+};

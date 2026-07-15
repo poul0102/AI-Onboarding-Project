@@ -4,41 +4,79 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import touristMarker from "@/assets/tourist.png";
+import accommodationMarker from "@/assets/accommodation.png";
+import selectedMarker from "@/assets/selected.png";
 
 const emit = defineEmits(["select-spot"]);
 const mapContainer = ref(null);
 const map = ref(null);
-const markers = ref([]);
+const markers = ref(new Map());
+const selectedMarkerRef = ref(null);
 
 const props = defineProps({
-  touristSpots: {
+  places: {
     type: Array,
     default: () => [],
   },
+  selectedPlace: {
+    type: Object,
+    default: null,
+  },
 });
+
+const getMarkerImage = (spot) => {
+  if (spot.selected) {
+    return selectedMarker;
+  }
+
+  if (spot.type === "tourist") {
+    return touristMarker;
+  }
+
+  if (spot.type === "accommodation") {
+    return accommodationMarker;
+  }
+
+  return touristMarker;
+};
+
+
 
 const createMarkers = () => {
   if (!map.value) return;
 
-  if (!props.touristSpots.length) return;
+  if (!props.places.length) return;
 
   markers.value.forEach((marker) => {
     marker.setMap(null);
   });
 
-  markers.value = [];
+  markers.value.clear();
 
-  props.touristSpots.forEach((spot) => {
+  props.places.forEach((spot) => {
+
     const markerPosition =
       new window.kakao.maps.LatLng(
         spot.mapy,
         spot.mapx
       );
 
-    const marker = 
+    const image =
+      new window.kakao.maps.MarkerImage(
+        getMarkerImage(spot),
+        new window.kakao.maps.Size(32, 32),
+        {
+          offset:
+            new window.kakao.maps.Point(16, 32)
+        }
+      );
+
+    const marker =
       new window.kakao.maps.Marker({
         position: markerPosition,
         title: spot.title,
+        image
       });
 
     marker.setMap(map.value);
@@ -47,12 +85,62 @@ const createMarkers = () => {
       emit("select-spot", spot);
     });
 
-    markers.value.push(marker);
+    markers.value.set(
+      spot.contentid,
+      marker
+    );
+
   });
 };
 
+const createSelectedMarker = (place) => {
+  if (selectedMarkerRef.value) {
+    selectedMarkerRef.value.setMap(null);
+  }
+
+  const position =
+    new window.kakao.maps.LatLng(
+      place.mapy,
+      place.mapx
+    );
+
+  const image =
+    new window.kakao.maps.MarkerImage(
+      selectedMarker,
+      new window.kakao.maps.Size(32, 32),
+      {
+        offset:
+          new window.kakao.maps.Point(16, 32)
+      }
+    );
+
+  const marker =
+    new window.kakao.maps.Marker({
+      position,
+      image
+    });
+
+  marker.setMap(map.value);
+
+  selectedMarkerRef.value = marker;
+
+};
+
+const moveToPlace = (place) => {
+  if (!place || !map.value) return;
+
+  const position = new window.kakao.maps.LatLng(
+    place.mapy,
+    place.mapx
+  );
+
+  map.value.setCenter(position);
+  map.value.setLevel(3);
+
+  createSelectedMarker(place);
+};
+
 const loadKakaoMap = () => {
-  
   if (window.kakao && window.kakao.maps) {
     initMap();
     return;
@@ -76,7 +164,11 @@ const initMap = () => {
     level: 6,
   };
 
-  map.value = new window.kakao.maps.Map(mapContainer.value, options);
+  map.value = new window.kakao.maps.Map(
+    mapContainer.value,
+    options
+  );
+
   createMarkers();
 };
 
@@ -85,11 +177,19 @@ onMounted(() => {
 });
 
 watch(
-  () => props.touristSpots,
+  () => props.places,
   () => {
     createMarkers();
   },
   { deep: true }
+);
+
+watch(
+  () => props.selectedPlace,
+  (place) => {
+    if (!place) return;
+    moveToPlace(place);
+  }
 );
 
 </script>
