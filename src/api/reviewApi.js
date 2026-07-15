@@ -1,8 +1,10 @@
 import api from "./axios";
 
-export const getReviews = (params) => {
+export const getReviews = (placeId) => {
   return api.get("/api/reviews", {
-    params,
+    params: {
+      place_id: placeId,
+    },
   });
 };
 
