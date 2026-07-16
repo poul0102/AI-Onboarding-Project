@@ -30,7 +30,7 @@
         </p>
 
         <div class="flex justify-end gap-2 mt-8">
-          <button @click="editMode = true" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
+          <button @click="editMode = true" class="bg-blue-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
             Edit
           </button>
 
@@ -63,7 +63,7 @@
             Cancel
           </button>
 
-          <button @click="saveReview" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+          <button @click="saveReview" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
             Save
           </button>
 
