@@ -57,7 +57,7 @@
 
     <ChatBotButton v-if="!showChatBot" @click="showChatBot = true" />
 
-    <ChatBotPopup v-if="showChatBot" @close="showChatBot = false" />
+    <ChatBotPopup v-if="showChatBot" @close="showChatBot = false" @select-place="handleChatSelect" />
 
   </div>
 
@@ -116,6 +116,15 @@ const handleSelectSpot = (spot) => {
 };
 
 const showChatBot = ref(false);
+
+const handleChatSelect = (place) => {
+  selectPlace.value = {
+    ...place,
+    type:
+      place.place_type === "ACCOMMODATION" ? "accommodation" : "tourist",
+    selected: true
+  };
+};
 
 onMounted(async () => {
   try {

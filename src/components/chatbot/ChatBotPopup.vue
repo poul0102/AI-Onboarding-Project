@@ -11,7 +11,8 @@
     </div>
 
     <div ref="messageContainer" class="flex-1 overflow-y-auto p-4 bg-gray-50">
-      <ChatMessage v-for="(message, index) in messages" :key="index" :message="message" />
+      <ChatMessage v-for="(message, index) in messages" :key="index" :message="message"
+        @select-place="emit('select-place', $event)" />
 
       <div v-if="loading" class="text-gray-400 text-sm">
         Thinking...
@@ -35,7 +36,10 @@ import { nextTick, ref } from "vue";
 import ChatMessage from "./ChatMessage.vue";
 import { sendChat } from "@/api/chatApi";
 
-defineEmits(["close"]);
+const emit = defineEmits([
+  "close",
+  "select-place"
+]);
 const input = ref("");
 const loading = ref(false);
 const messageContainer = ref(null);
