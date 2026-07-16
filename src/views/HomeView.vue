@@ -2,18 +2,12 @@
 
   <div class="min-h-screen bg-slate-50">
 
-    <header class="h-16 flex items-center justify-between px-8 bg-white border-b">
-      <h1 class="text-2xl font-bold text-green-600">
-        🌏 SeoulLog
-      </h1>
-    </header>
+    <section class="py-10 px-8 bg-slate-50">
+      <div class="flex items-center justify-center gap-8">
+        <h1 class="text-5xl font-bold text-green-600 whitespace-nowrap">
+          🌏 SeoulLog
+        </h1>
 
-    <section class="py-10 bg-slate-50">
-      <h2 class="test-3xl font-bold text-center text-gray-900 mb-6">
-        Discover Seoul
-      </h2>
-
-      <div class="flex justify-center">
         <input v-model="keyword" @keyup.enter="handleSearch" type="text" placeholder="Search attractions, hotels..."
           class="w-[600px] max-w-[90%] rounded-full border border-gray-200 bg-white px-6 py-4 shadow-sm ontline-none focus:ring-2 focus:ring-blue-500" />
       </div>
