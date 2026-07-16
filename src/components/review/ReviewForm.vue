@@ -2,17 +2,9 @@
 
   <div>
 
-    <input 
-      v-model="form.review_title"
-      placeholder="제목"
-      class="border p-2 w-full mb-3"
-    />
+    <input v-model="form.review_title" placeholder="Title" class="border p-2 w-full mb-3" />
 
-    <textarea
-      v-model="form.content"
-      placeholder="내용"
-      class="border p-2 w-full mb-3"
-    />
+    <textarea v-model="form.content" placeholder="Contents" class="border p-2 w-full mb-3" />
 
     <div class="mb-3">
       <label class="block mb-1 text-sm font-medium">
@@ -21,39 +13,22 @@
 
       <div class="flex gap-1 text-3xl cursor-pointer">
 
-        <span
-          v-for="star in 5"
-          :key="star"
-          @click="form.rating = star"
-          class="cursor-pointer transition"
-          :class="star <= form.rating ? 'text-yellow-400' : 'text-gray-300'"
-        >
-          {{ star <= form.rating ? "★" : "☆" }}
-        </span>
+        <span v-for="star in 5" :key="star" @click="form.rating = star" class="cursor-pointer transition"
+          :class="star <= form.rating ? 'text-yellow-400' : 'text-gray-300'">
+          {{ star <= form.rating ? "★" : "☆" }} </span>
       </div>
     </div>
 
-    <input
-      v-model="form.password"
-      type="password"
-      placeholder="수정/삭제 비밀번호"
-      class="border p-2 w-full mb-3"
-    />
+    <input v-model="form.password" type="password" placeholder="Password" class="border p-2 w-full mb-3" />
 
     <div class="flex justify-end gap-2">
 
-      <button
-        @click="emit('close')"
-        class="border px-4 py-2 rounded"
-      >
-        취소
+      <button @click="emit('close')" class="border px-4 py-2 rounded">
+        Cancel
       </button>
 
-      <button
-        @click="submit"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        등록
+      <button @click="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+        Save
       </button>
 
     </div>
@@ -69,9 +44,9 @@ import { ref } from 'vue';
 const emit = defineEmits(["created", "close"]);
 
 const props = defineProps({
-  place:{
-    type:Object,
-    default:null
+  place: {
+    type: Object,
+    default: null
   }
 });
 
@@ -89,14 +64,14 @@ const createInitialForm = () => ({
 
 const form = ref(createInitialForm());
 
-const submit = async() => {
-  
+const submit = async () => {
+
   if (!props.place) {
     alert("장소를 먼저 선택해주세요.");
     return;
   }
-  
-  try{
+
+  try {
     form.value.place_id = String(props.place.contentid);
     form.value.place_title = props.place.title;
     form.value.addr1 = props.place.addr1;
@@ -105,16 +80,16 @@ const submit = async() => {
 
     await createReview(form.value);
 
-    alert("등록 완료");
+    alert("Success");
 
     emit("created");
     emit("close");
 
     form.value = createInitialForm();
 
-  }catch(error){
+  } catch (error) {
     console.error(error);
-    alert("등록 실패");
+    alert("Fail");
   }
 };
 </script>

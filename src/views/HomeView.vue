@@ -4,7 +4,7 @@
 
     <header class="h-16 flex items-center justify-between px-8 bg-white border-b">
       <h1 class="text-2xl font-bold text-blue-600">
-        🌏 SeoulMate
+        🌏 SeoulLog
       </h1>
     </header>
 

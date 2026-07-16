@@ -4,17 +4,11 @@
 
     <h1 class="text-3xl font-bold mb-6">Reviews</h1>
 
-    <button 
-    @click="showForm=!showForm" 
-    class="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-    리뷰 작성
+    <button @click="showForm = !showForm" class="bg-blue-500 text-white px-4 py-2 rounded">
+      New Review
     </button>
 
-    <ReviewForm
-    v-if="showForm"
-    @created="loadReviews"
-    />
+    <ReviewForm v-if="showForm" @created="loadReviews" />
 
     <div v-for="review in reviews" :key="review.id" class="border p-4 mt-4 rounded">
       <h2 class="cont-bold">{{ review.title }}</h2>
@@ -31,7 +25,7 @@ import ReviewForm from '@/components/review/ReviewForm.vue';
 import { onMounted, ref } from 'vue';
 
 const reviews = ref([]);
-const loadReviews = async() => {
+const loadReviews = async () => {
   const response = await getReviews();
   reviews.value = response.data;
 };

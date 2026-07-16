@@ -2,48 +2,28 @@
   <div class="fixed bottom-24 right-6 w-[380px] h-[600px] bg-white rounded-2xl shadow-2xl border flex flex-col z-50">
     <div class="bg-blue-500 text-white px-5 py-4 rounded-t-2xl flex justify-between items-center">
       <h2 class="font-bold text-lg">
-        SeoulMate ChatBot
+        SeoulLog ChatBot
       </h2>
 
-      <button
-        @click="$emit('close')"
-        class="text-xl"
-      >
+      <button @click="$emit('close')" class="text-xl">
         ✕
       </button>
     </div>
 
-    <div
-      ref="messageContainer"
-      class="flex-1 overflow-y-auto p-4 bg-gray-50"
-    >
-      <ChatMessage
-        v-for="(message, index) in messages"
-        :key="index"
-        :message="message"
-      />
+    <div ref="messageContainer" class="flex-1 overflow-y-auto p-4 bg-gray-50">
+      <ChatMessage v-for="(message, index) in messages" :key="index" :message="message" />
 
-      <div
-        v-if="loading"
-        class="text-gray-400 text-sm"
-      >
-        답변을 생성하는 중...
+      <div v-if="loading" class="text-gray-400 text-sm">
+        Thinking...
       </div>
     </div>
 
     <div class="border-t p-3 flex gap-2">
-      <input
-        v-model="input"
-        @keyup.enter="send"
-        class="flex-1 border rounded-lg px-3 py-2 outline-none"
-        placeholder="궁금한 내용을 입력하세요."
-      />
+      <input v-model="input" @keyup.enter="send" class="flex-1 border rounded-lg px-3 py-2 outline-none"
+        placeholder="Type your message" />
 
-      <button
-        @click="send"
-        class="bg-blue-500 text-white px-4 rounded-lg"
-      >
-        전송
+      <button @click="send" class="bg-blue-500 text-white px-4 rounded-lg">
+        Send
       </button>
     </div>
   </div>

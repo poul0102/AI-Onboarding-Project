@@ -1,29 +1,15 @@
 <template>
-  <div
-    class="flex mb-3"
-    :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
-  >
-    <div
-      class="max-w-[80%] rounded-2xl px-4 py-3"
-      :class="
-        message.role === 'user'
-          ? 'bg-blue-500 text-white rounded-br-sm'
-          : 'bg-gray-100 text-gray-800 rounded-bl-sm'
-      "
-    >
+  <div class="flex mb-3" :class="message.role === 'user' ? 'justify-end' : 'justify-start'">
+    <div class="max-w-[80%] rounded-2xl px-4 py-3" :class="message.role === 'user'
+        ? 'bg-blue-500 text-white rounded-br-sm'
+        : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+      ">
       <p class="whitespace-pre-wrap">
         {{ message.text }}
       </p>
 
-      <div
-        v-if="message.results && message.results.length"
-        class="mt-3 space-y-2"
-      >
-        <div
-          v-for="place in message.results"
-          :key="place.contentid"
-          class="bg-white rounded-lg border p-3 text-sm"
-        >
+      <div v-if="message.results && message.results.length" class="mt-3 space-y-2">
+        <div v-for="place in message.results" :key="place.contentid" class="bg-white rounded-lg border p-3 text-sm">
           <div class="font-semibold">
             {{ place.title }}
           </div>
@@ -38,7 +24,7 @@
             </span>
 
             <span class="text-gray-400">
-              리뷰 {{ place.review_count }}개
+              Reviews {{ place.review_count }}
             </span>
           </div>
         </div>

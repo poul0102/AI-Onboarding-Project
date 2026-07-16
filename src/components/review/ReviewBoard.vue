@@ -7,13 +7,9 @@
         Reviews
       </h2>
 
-      <button
-        @click="openModal"
-        :disabled="!place"
-        class="px-4 py-2 rounded-lg text-white"
-        :class="place ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-300 cursor-not-allowed'"
-      >
-        리뷰 작성
+      <button @click="openModal" :disabled="!place" class="px-4 py-2 rounded-lg text-white"
+        :class="place ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-300 cursor-not-allowed'">
+        New Review
       </button>
 
     </div>
@@ -35,22 +31,15 @@
         </span>
 
         <span class="text-gray-500">
-          리뷰 {{ reviewCount }}개
+          Reviews {{ reviewCount }}
         </span>
 
       </div>
 
-      <div
-        v-if="reviews.length"
-        class="space-y-3"
-      >
+      <div v-if="reviews.length" class="space-y-3">
 
-        <div
-          v-for="review in reviews"
-          :key="review.id"
-          @click="openDetail(review.id)"
-          class="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition"
-        >
+        <div v-for="review in reviews" :key="review.id" @click="openDetail(review.id)"
+          class="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition">
 
           <div class="flex justify-between items-center">
 
@@ -76,65 +65,40 @@
 
       </div>
 
-      <div
-        v-else
-        class="text-gray-400"
-      >
-        아직 등록된 리뷰가 없습니다.
+      <div v-else class="text-gray-400">
+        There are no reviews yet.
       </div>
 
     </div>
 
-    <div
-      v-else
-      class="text-gray-400"
-    >
-      장소를 선택하면 리뷰를 확인할 수 있습니다.
+    <div v-else class="text-gray-400">
+      Select a place to reviews.
     </div>
 
-    <div
-      v-if="showModal"
-      class="fixed inset-0 bg-black/40 flex justify-center items-center z-50"
-      @click="closeModal"
-    >
+    <div v-if="showModal" class="fixed inset-0 bg-black/40 flex justify-center items-center z-50" @click="closeModal">
 
-      <div
-        class="bg-white rounded-xl w-[500px] p-6"
-        @click.stop
-      >
+      <div class="bg-white rounded-xl w-[500px] p-6" @click.stop>
 
         <div class="flex justify-between items-center mb-5">
 
           <h2 class="text-xl font-bold">
-            리뷰 작성
+            New Review
           </h2>
 
-          <button
-            @click="closeModal"
-            class="text-gray-400"
-          >
+          <button @click="closeModal" class="text-gray-400">
             ✕
           </button>
 
         </div>
 
-        <ReviewForm
-          :place="place"
-          @created="handleCreated"
-          @close="closeModal"
-        />
+        <ReviewForm :place="place" @created="handleCreated" @close="closeModal" />
 
       </div>
 
     </div>
 
-    <ReviewDetail
-      :show="showDetail"
-      :review="selectedReview"
-      @updated="handleUpdated"
-      @deleted="handleDeleted"
-      @close="showDetail = false"
-    />
+    <ReviewDetail :show="showDetail" :review="selectedReview" @updated="handleUpdated" @deleted="handleDeleted"
+      @close="showDetail = false" />
 
   </div>
 </template>
@@ -221,7 +185,7 @@ const handleUpdated = async (review) => {
 }
 
 const handleDeleted = async () => {
-  showDetail.value=false;
+  showDetail.value = false;
   await loadReviews();
 }
 
