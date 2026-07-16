@@ -65,10 +65,10 @@ const createMarkers = () => {
     const image =
       new window.kakao.maps.MarkerImage(
         getMarkerImage(spot),
-        new window.kakao.maps.Size(32, 32),
+        new window.kakao.maps.Size(70, 70),
         {
           offset:
-            new window.kakao.maps.Point(16, 32)
+            new window.kakao.maps.Point(35, 70)
         }
       );
 
@@ -107,10 +107,10 @@ const createSelectedMarker = (place) => {
   const image =
     new window.kakao.maps.MarkerImage(
       selectedMarker,
-      new window.kakao.maps.Size(32, 32),
+      new window.kakao.maps.Size(70, 70),
       {
         offset:
-          new window.kakao.maps.Point(16, 32)
+          new window.kakao.maps.Point(35, 70)
       }
     );
 
